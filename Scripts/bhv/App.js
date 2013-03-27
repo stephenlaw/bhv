@@ -5,7 +5,7 @@
 /************************************************************/
 
 var App = {
-    debug: false,
+    debug: true,
     currentCheckinRecord: null,
     showGuestBuildings: true,
     buildings: null,

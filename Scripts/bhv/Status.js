@@ -79,9 +79,9 @@ var Status = {
                 console.log('Error:' + xhr.statusText);
                 // for now: totdat we de checkinviewmodel hebben aangepast
                 App.reloadData();
-                //Status.GetStatus();
+                Status.GetStatus();
                 //top.document.location.href = "Index.html#tabstrip-status";
-                $(window.location).attr('href', 'Index.html#tabstrip-status');
+                //$(window.location).attr('href', 'Index.html#tabstrip-status');
             },
             statusCode:
             {
@@ -90,9 +90,9 @@ var Status = {
                         console.log("checkout without error");
                     //Lees gebouwen en personen opnieuw in.
                     App.reloadData();
-                    //Status.GetStatus();
+                    Status.GetStatus();
                     //top.document.location.href = "Index.html#tabstrip-status";
-                    $(window.location).attr('href', 'Index.html#tabstrip-status');
+                    //$(window.location).attr('href', 'Index.html#tabstrip-status');
                 },
                 403: function (result) {
                     console.log("No Key specified");
@@ -104,6 +104,15 @@ var Status = {
 
             }
         });
+    },
+    doCheckin: function (id) {
+        //alert("do checkin :" + id);
+        var buildingId = id;
+        App.currentCheckinRecord.BuildingId = buildingId;
+        App.currentCheckinRecord.CheckinDevice = "Mobile";
+        App.currentCheckinRecord.CheckinMethode = "Manual";
+        Status.CheckIn();
+        Status.GetStatus();
     },
     GetStatus: function () {
         if (App.debug)
@@ -124,7 +133,7 @@ var Status = {
                     200: function (result) {
                         App.currentCheckinRecord = result;
                         if (result.IsCheckedIn) {
-                            $("#CheckinOut").text('Afmelden').attr("href", "#CheckoutPerson");
+                            $("#CheckinOut").text('Afmelden').attr("onClick", "Status.PrepareCheckOut()");
                             $("#StatusMessage").html('<h3>U bent op dit moment aangemeld in het ' + result.BuildingName + ' <br/>U kunt zich afmelden door voor de optie afmelden te kiezen</h3>');
                             //Zorg er voor dat de andere controls niet meer zichtbaar zijn.
                             $("#MyAssignedBuildings").hide();

@@ -57,15 +57,12 @@
     <!-- Status -->
     <div data-role="view" id="tabstrip-status" data-title="Status" data-layout="mobile-tabstrip"
         data-show="Status.GetStatus">
-        <script>
-            Status.GetStatus();
-        </script>
         <div id="StatusMessage" class="StatusMessage">
         </div>
         <ul data-role="listview" data-style="inset" data-type="group">
             <li id="thisBuilding">
                 <ul>
-                    <li><a id="CheckinOut" href="#Error">Test</a> </li>
+                    <li><a id="CheckinOut">Test</a> </li>
                 </ul>
             </li>
             <li id="MyAssignedBuildings">Mijn Gebouwen
@@ -395,9 +392,9 @@
     </script>
     <!-- CheckinBuildingsTemplate -->
     <script type="text/x-kendo-template" id="CheckinBuildingsTemplate">
-        <a class="details-link" data-role="listview-link" href="\#checkin?id=#:Id#">
-        <img src="#:ListImageUrl#"  class="main-image"/>
-        <h2>#:Name#</h2>
+        <a class="details-link" data-role="listview-link" onclick="Status.doCheckin(#:Id#)">
+        <img src="#:ListImageUrl#"  class="main-image" onclick="Status.doCheckin(#:Id#)"/>
+        <h2 onclick="Status.doCheckin(#:Id#)">#:Name#</h2>
         </a>
     </script>
     <script type="text/x-kendo-template" id="AllPersonsListViewTemplate">
