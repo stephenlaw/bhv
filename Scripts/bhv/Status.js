@@ -47,7 +47,7 @@ var Status = {
                     //                    Utility.readBuildings();
                     //                    Utility.readPersons();
                     App.reloadData();
-                    document.location.href = "Index.html#tabstrip-status";
+                    document.location.href = "Index.html";
                 },
                 403: function (result) {
                     alert("No Key specified");
@@ -79,7 +79,7 @@ var Status = {
                 // for now: totdat we de checkinviewmodel hebben aangepast
                 App.reloadData();
                 //Status.GetStatus();
-                document.location.href = "Index.html#tabstrip-status";
+                document.location.href = "Index.html";
             },
             statusCode:
             {
@@ -89,7 +89,7 @@ var Status = {
                     //Lees gebouwen en personen opnieuw in.
                     App.reloadData();
                     //Status.GetStatus();
-                    document.location.href = "Index.html#tabstrip-status";
+                    document.location.href = "Index.html";
                 },
                 403: function (result) {
                     console.log("No Key specified");
