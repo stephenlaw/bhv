@@ -10,6 +10,7 @@
     <link href="Css/bhvmob.css" rel="stylesheet" />
     <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
     <script src="http://cdn.kendostatic.com/2012.3.1114/js/kendo.all.min.js"></script>
+    
     <!-- include bhv specific javascript files -->
     <script src="Scripts/bhv/Utility.js"></script>
     <script src="Scripts/bhv/Settings.js"></script>
@@ -56,6 +57,9 @@
     <!-- Status -->
     <div data-role="view" id="tabstrip-status" data-title="Status" data-layout="mobile-tabstrip"
         data-show="Status.GetStatus">
+        <script>
+            Status.GetStatus();
+        </script>
         <div id="StatusMessage" class="StatusMessage">
         </div>
         <ul data-role="listview" data-style="inset" data-type="group">
@@ -76,12 +80,9 @@
         data-show="Status.PrepareCheckOut">
         <header data-role="header">
             <div data-role="navbar">
-                <button data-role="backbutton" data-align="left">Back</button> <span data-role="view-title">Afgemeld</span>
             </div>
         </header>
-        <p>
-            <button data-role="backbutton" data-align="left">Back</button> <span data-role="view-title">U bent succesvol afgemeld!        </span>
-        </p>
+        
     </div>
     <!-- Checkin -->
     <div data-role="view" id="checkin" data-title="Aanmelden" data-layout="mobile-tabstrip"
@@ -94,9 +95,6 @@
         <div id="CheckinSuccesfull">
             Dit mag niet worden getoond
         </div>
-        <ul data-role="listview" data-style="inset">
-            <li><a id="checkinBuildingRef" href="#test">Toon gebouw details</a> </li>
-        </ul>
     </div>
     <!-- Instellingen -->
     <div data-role="view" id="tabstrip-instellingen" data-title="Instellingen" data-layout="mobile-tabstrip">

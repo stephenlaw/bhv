@@ -48,7 +48,7 @@ var Status = {
                     //                    Utility.readPersons();
                     App.reloadData();
                     //top.document.location.href = "Index.html#tabstrip-status";
-                    location.reload(true);
+                    $(window.location).attr('href', 'Index.html#tabstrip-status');
                 },
                 403: function (result) {
                     alert("No Key specified");
@@ -81,7 +81,7 @@ var Status = {
                 App.reloadData();
                 //Status.GetStatus();
                 //top.document.location.href = "Index.html#tabstrip-status";
-                location.reload(true);
+                $(window.location).attr('href', 'Index.html#tabstrip-status');
             },
             statusCode:
             {
@@ -92,7 +92,7 @@ var Status = {
                     App.reloadData();
                     //Status.GetStatus();
                     //top.document.location.href = "Index.html#tabstrip-status";
-                    location.reload(true);
+                    $(window.location).attr('href', 'Index.html#tabstrip-status');
                 },
                 403: function (result) {
                     console.log("No Key specified");
