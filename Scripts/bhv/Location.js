@@ -9,7 +9,7 @@ var LocationService = {
         if (App.debug)
             console.log("Start locationservice");              
 
-        Settings.setPreferences();
+        //Settings.setPreferences();
 
         // Laat de laatste bekende locatie
         if (App.debug)

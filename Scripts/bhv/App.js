@@ -42,7 +42,7 @@ var App = {
         $(function () {
             App.context.showLoading();
         });
-        
+
         //default fillers?
         this.buildingRequestType = { Type: "all", Latitude: 1, Longitude: 1, Range: 160000.0 };
         this.checkinRequestType = { Type: "all", Latitude: 1, Longitude: 1, Range: 160000.0 };
@@ -51,6 +51,9 @@ var App = {
         // set the templates
         this.itemDetailsTemplate = top.kendo.template($("#buildingDetailTemplate").html());
         this.testTemplate = top.kendo.template($("#ShowPersonDetailViewTest").html());
+
+        //load demo data
+        Settings.loadDemoData();
 
         //start loading locations?         
         LocationService.getLocation();
@@ -73,6 +76,13 @@ var App = {
     reloadData: function () {
         if (App.debug)
             console.log("reloading data");
+
+        LocationService.getLocation();
+        Utility.loadBuildingDataSource();
+        Utility.loadAllPersonDataSource();
+        Utility.loadPersonForBuildingDataSource();
+        Utility.loadCheckinBuildingDataSource();
+        Utility.loadCheckinDataSource();
 
         Utility.readBuildings();
         Utility.readPersons();

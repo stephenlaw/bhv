@@ -160,12 +160,7 @@ var Utility = {
                 200: function (result) {
                     //alert("Changes saved");
                     App.currentPerson = result;
-                    LocationService.getLocation();
-                    Utility.loadBuildingDataSource();
-                    Utility.loadAllPersonDataSource();
-                    Utility.loadPersonForBuildingDataSource();
-                    Utility.loadCheckinBuildingDataSource();
-                    Utility.loadCheckinDataSource();
+                    App.reloadData();
 
                 },
                 403: function (result) {
