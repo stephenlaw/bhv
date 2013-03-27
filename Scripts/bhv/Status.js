@@ -47,8 +47,9 @@ var Status = {
                     //                    Utility.readBuildings();
                     //                    Utility.readPersons();
                     App.reloadData();
+                    Status.GetStatus();
                     //top.document.location.href = "Index.html#tabstrip-status";
-                    $(window.location).attr('href', 'Index.html#tabstrip-status');
+                    //$(window.location).attr('href', 'Index.html#tabstrip-status');
                 },
                 403: function (result) {
                     alert("No Key specified");
@@ -133,7 +134,7 @@ var Status = {
                     200: function (result) {
                         App.currentCheckinRecord = result;
                         if (result.IsCheckedIn) {
-                            $("#CheckinOut").text('Afmelden').attr("onClick", "Status.PrepareCheckOut()");
+                            $("#CheckinOut").text('Afmelden');
                             $("#StatusMessage").html('<h3>U bent op dit moment aangemeld in het ' + result.BuildingName + ' <br/>U kunt zich afmelden door voor de optie afmelden te kiezen</h3>');
                             //Zorg er voor dat de andere controls niet meer zichtbaar zijn.
                             $("#MyAssignedBuildings").hide();

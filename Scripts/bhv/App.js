@@ -70,6 +70,31 @@ var App = {
         if (this.currentIdentity == "" || this.currentIdentity == null)
             $("#layout-status").attr("style", "display:none;");
 
+
+        /* some listeners here */
+
+        $(".checkin-link").live('touchstart click', function () {            
+            event.stopPropagation();
+            event.preventDefault();
+            if (event.handled !== true) {
+                Status.doCheckin(this.id);
+                event.handled = true;
+            } else {
+                return false;
+            }
+        });
+
+        $("#CheckinOut").live('touchstart click', function () {
+            event.stopPropagation();
+            event.preventDefault();
+            if (event.handled !== true) {
+                Status.PrepareCheckOut();
+                event.handled = true;
+            } else {
+                return false;
+            }
+            
+        });
     },
     // for now this function exist for the reason to reload data after checking/checkout
     // untill we've found a better way to do this
@@ -88,3 +113,4 @@ var App = {
         Utility.readPersons();
     }
 }
+
