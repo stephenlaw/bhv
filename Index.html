@@ -62,7 +62,7 @@
         <ul data-role="listview" data-style="inset" data-type="group">
             <li id="thisBuilding">
                 <ul>
-                    <li><a id="CheckinOut">Test</a> </li>
+                    <li><div id="CheckinOut">Test</div> </li>
                 </ul>
             </li>
             <li id="MyAssignedBuildings">Mijn Gebouwen
@@ -392,10 +392,10 @@
     </script>
     <!-- CheckinBuildingsTemplate -->
     <script type="text/x-kendo-template" id="CheckinBuildingsTemplate">
-        <a class="details-link" data-role="listview-link" onclick="Status.doCheckin(#:Id#)">
+        <div class="details-link" data-role="listview-link" onclick="Status.doCheckin(#:Id#)">
         <img src="#:ListImageUrl#"  class="main-image" onclick="Status.doCheckin(#:Id#)"/>
         <h2 onclick="Status.doCheckin(#:Id#)">#:Name#</h2>
-        </a>
+        </div>
     </script>
     <script type="text/x-kendo-template" id="AllPersonsListViewTemplate">
         <a class="details-link" data-role="listview-link" href="\#PersonDetailsTest?id=#:Id#">
