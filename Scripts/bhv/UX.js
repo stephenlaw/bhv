@@ -38,11 +38,22 @@ var UX = {
         });
     },
     ShowAllBuildingsView: function (e) {
+        if (App.debug)
+            console.log("===> ShowAllBuildingsView <===");
         // Toon de gebouwen in een bepaalde straal. 
-        e.view.content.find(".item-list").data("kendoMobileListView").refresh();
+
+        $("#AllBuildingsList").kendoListView({
+            dataSource: top.AllBuildingDataSource,
+            pageable: false,
+            template: App.AllBuildingsListViewTemplate
+        });       
     },
     ShowAllPersonsView: function (e) {
-        e.view.content.find(".item-list").data("kendoMobileListView").refresh();
+        $("#AllPersonsList").kendoListView({
+            dataSource: top.AllPersonDataSource,
+            pageable: false,
+            template: App.AllPersonsListViewTemplate
+        });       
     },
     closeModalViewContact: function () {
         $("#PersonContactView").kendoMobileModalView("close");
@@ -52,6 +63,8 @@ var UX = {
     / todo: add some more details to it?             
     /********************************************/
     showBuildingDetailsView: function (e) {
+        if (App.debug)
+            console.log("===> showBuildingDetailsView <===");
 
         var view = e.view;
 

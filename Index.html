@@ -48,8 +48,7 @@
         </footer>
     </div>
     <!-- Gebouwen -->
-    <div data-role="view" id="tabstrip-buildings" data-title="Gebouwen" data-layout="mobile-tabstrip"
-        data-show="UX.ShowAllBuildingsView">
+    <div data-role="view" id="tabstrip-buildings" data-title="Gebouwen" data-layout="mobile-tabstrip" data-show="UX.ShowAllBuildingsView">
         <ul id="AllBuildingsList" class="item-list" data-role="listview" data-template="AllBuildingsListViewTemplate"
             data-source="AllBuildingDataSource">
         </ul>
@@ -354,6 +353,7 @@
         </a>
     </script>
     <script type="text/x-kendo-template" id="AllBuildingsListViewTemplate">
+    <li>
         <a class="details-link" data-role="listview-link" href="\#buildingDetails?id=#:Id#">
         <img src="#:ListImageUrl#" class="main-image"/>
         <div class="headerTitle">
@@ -389,6 +389,7 @@
          <h6 class="icon-container non-occupied"><img src="Images/receptie.jpg"/> #:NumberOfReceptie#</h6>
         # } #
         </a>
+        </li>
     </script>
     <!-- CheckinBuildingsTemplate -->
     <script type="text/x-kendo-template" id="CheckinBuildingsTemplate">
@@ -398,6 +399,7 @@
         </a>
     </script>
     <script type="text/x-kendo-template" id="AllPersonsListViewTemplate">
+    <li>
         <a class="details-link" data-role="listview-link" href="\#PersonDetailsTest?id=#:Id#">
         <img src="#:ListImageUrl#" class="main-image"/>
         <div class="listHeader">
@@ -420,7 +422,7 @@
         <img src="Images/receptie.jpg" class="occupation-icon"/> 
         # } #  
               
-        </a>
+        </a></li>
     </script>
     <script type="text/x-kendo-template" id="CheckinPersonsListViewTemplate">
         <a class="details-link" data-role="listview-link" href="\#PersonDetailsTest?id=#:Id#">

@@ -48,8 +48,6 @@ var Status = {
                     //                    Utility.readPersons();
                     App.reloadData();
                     Status.GetStatus();
-                    //top.document.location.href = "Index.html#tabstrip-status";
-                    //$(window.location).attr('href', 'Index.html#tabstrip-status');
                 },
                 403: function (result) {
                     alert("No Key specified");
@@ -80,9 +78,7 @@ var Status = {
                 console.log('Error:' + xhr.statusText);
                 // for now: totdat we de checkinviewmodel hebben aangepast
                 App.reloadData();
-                Status.GetStatus();
-                //top.document.location.href = "Index.html#tabstrip-status";
-                //$(window.location).attr('href', 'Index.html#tabstrip-status');
+                Status.GetStatus();                                
             },
             statusCode:
             {
@@ -149,9 +145,13 @@ var Status = {
                                 $("#StatusMessage").text('Hallo aanmelden');
                             } else {
                                 $("#thisBuilding").hide();
+                                if (App.debug)
+                                    console.log("check if there are buildings nearby. if no, show a response");
+
 
                                 //check if there are buildings nearby. if no, show a response
-                                if ($("#MyAssignedBuildings li").size() > 0) {
+                                if (top.CheckinBuildingDataSource._total > 0) {
+                                    top.CheckinBuildingDataSource.read();
                                     $("#MyAssignedBuildings").show();
                                     $("#StatusMessage").html('<h3>Aanmelden kan in 1 of meerdere gebouwen</h3>');
                                 } else {

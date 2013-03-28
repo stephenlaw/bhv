@@ -5,7 +5,7 @@
 /************************************************************/
 
 var App = {
-    debug: false,
+    debug: true,
     currentCheckinRecord: null,
     showGuestBuildings: true,
     buildings: null,
@@ -28,6 +28,8 @@ var App = {
     itemDetailsTemplate: null,
     testTemplate: null,
     PersonForBuildingDataSource: null,
+    AllBuildingsListViewTemplate: null,
+    AllPersonsListViewTemplate:null,
     AllPersonDataSource: null,
     AllBuildingDataSource: null,
     CheckinBuildingDataSource: null,
@@ -51,6 +53,9 @@ var App = {
         // set the templates
         this.itemDetailsTemplate = top.kendo.template($("#buildingDetailTemplate").html());
         this.testTemplate = top.kendo.template($("#ShowPersonDetailViewTest").html());
+        this.AllBuildingsListViewTemplate = top.kendo.template($("#AllBuildingsListViewTemplate").html());
+        this.AllPersonsListViewTemplate = top.kendo.template($("#AllPersonsListViewTemplate").html());
+        
 
         //load demo data
         Settings.loadDemoData();
@@ -73,7 +78,7 @@ var App = {
 
         /* some listeners here */
 
-        $(".checkin-link").live('touchstart click', function () {            
+        $(".checkin-link").live('touchstart click', function () {
             event.stopPropagation();
             event.preventDefault();
             if (event.handled !== true) {
@@ -93,7 +98,7 @@ var App = {
             } else {
                 return false;
             }
-            
+
         });
     },
     // for now this function exist for the reason to reload data after checking/checkout
@@ -111,6 +116,9 @@ var App = {
 
         Utility.readBuildings();
         Utility.readPersons();
+
+
+
     }
 }
 

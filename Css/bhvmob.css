@@ -864,3 +864,9 @@ font: bold .9rem HelveticaNeue,sans-serif;
     padding-left: 5em!important;
 }
 /* einde poging android WUR hijsstijl */
+
+#AllPersonsList > li,
+#AllBuildingsList > li
+{
+    background-color: White;
+}

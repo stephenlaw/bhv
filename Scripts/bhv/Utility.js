@@ -178,7 +178,7 @@ var Utility = {
     },
     loadCheckinDataSource: function () {
         if (App.debug)
-            console.log("Loading checkin data");
+            console.log("Loading checkin data for : " + App.currentIdentity);
 
 
         top.CheckinDataSource = top.kendo.data.DataSource.create({
@@ -206,7 +206,7 @@ var Utility = {
     // buildings at which we can sign in (let's say if we are within 200m)
     loadCheckinBuildingDataSource: function () {
         if (App.debug)
-            console.log("Loading checkin buildings datasource :" + App.webapiurl + "buildings");
+            console.log("Loading checkin buildings datasource buildings for + " + App.currentIdentity);
 
         top.CheckinBuildingDataSource = top.kendo.data.DataSource.create({
             schema: App.buildingSchema,
@@ -285,7 +285,10 @@ var Utility = {
         });
 
     },
-    loadBuildingDataSource: function () {        
+    loadBuildingDataSource: function () {
+        if (App.debug)
+            console.log("getting a fresh copy of building list");
+
         top.AllBuildingDataSource = top.kendo.data.DataSource.create({
             schema: App.buildingSchema,
             transport:
@@ -300,7 +303,7 @@ var Utility = {
                 async: false,
                 dataType: "json",
                 requestStart: function (e) {
-                    LocationService.getLocation();
+                    //LocationService.getLocation();
                 }
             }
         },
@@ -308,22 +311,23 @@ var Utility = {
                 console.log("ERROR: " + arguments);
             }
         });
+
     },
     readPersons: function () {
-        AllPersonDataSource.transport.options.read.url = App.webapiurl + "persons";
-        AllPersonDataSource.read();
-        AllPersonDataSource.sort([{ field: "Type", dir: "asc" }, { field: "Distance", dir: "asc"}]);
+        top.AllPersonDataSource.transport.options.read.url = App.webapiurl + "persons";
+        top.AllPersonDataSource.read();
+        top.AllPersonDataSource.sort([{ field: "Type", dir: "asc" }, { field: "Distance", dir: "asc"}]);
     },
     readBuildings: function () {
         //Lees gebouwen in.
-        AllBuildingDataSource.transport.options.read.url = App.webapiurl + "buildings";
-        AllBuildingDataSource.read();
+        top.AllBuildingDataSource.transport.options.read.url = App.webapiurl + "buildings";
+        top.AllBuildingDataSource.read();
         //AllBuildingDataSource.sort([{ field: "Type", dir: "asc" }, { field: "Distance", dir: "asc" }]);
-        AllBuildingDataSource.sort([{ field: "Distance", dir: "asc"}]);
+        top.AllBuildingDataSource.sort([{ field: "Distance", dir: "asc"}]);
 
-        CheckinBuildingDataSource.transport.options.read.url = App.webapiurl + "buildings";
-        CheckinBuildingDataSource.read();
-        CheckinBuildingDataSource.sort([{ field: "Distance", dir: "asc"}]);
+        top.CheckinBuildingDataSource.transport.options.read.url = App.webapiurl + "buildings";
+        top.CheckinBuildingDataSource.read();
+        top.CheckinBuildingDataSource.sort([{ field: "Distance", dir: "asc"}]);
 
     },
     //Read settings from server.
