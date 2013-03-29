@@ -63,23 +63,24 @@
                 <ul>
                     <li><a id="CheckinOut" href="#tabstrip-status">Test</a> </li>
                 </ul>
-            </li>
-            <li id="MyAssignedBuildings">Mijn Gebouwen
-                <ul data-role="listview" data-source="CheckinBuildingDataSource" data-template="CheckinBuildingsTemplate"
+            </li>            
+        </ul>
+        <div id="MyAssignedBuildings">        
+                <ul data-role="listview" id="assignedBuildings" data-source="CheckinBuildingDataSource" data-template="CheckinBuildingsTemplate"
                     class="item-list">
                 </ul>
-            </li>
-        </ul>
+            </div>
     </div>
+
     <!-- Checkout -->
     <div data-role="view" id="CheckoutPerson" data-title="Afmelden" data-layout="mobile-tabstrip"
         data-show="Status.PrepareCheckOut">
         <header data-role="header">
             <div data-role="navbar">
             </div>
-        </header>
-        
+        </header>        
     </div>
+
     <!-- Checkin -->
     <div data-role="view" id="checkin" data-title="Aanmelden" data-layout="mobile-tabstrip"
         data-show="Status.PrepareCheckin">
@@ -393,10 +394,12 @@
     </script>
     <!-- CheckinBuildingsTemplate -->
     <script type="text/x-kendo-template" id="CheckinBuildingsTemplate">
+        <li>
         <a class="details-link checkin-link" id="#:id#" data-role="listview-link" href="\#tabstrip-status">
         <img src="#:ListImageUrl#"  class="main-image"/>
         <h2>#:Name#</h2>
         </a>
+        </li>
     </script>
     <script type="text/x-kendo-template" id="AllPersonsListViewTemplate">
     <li>

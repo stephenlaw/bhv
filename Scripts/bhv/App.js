@@ -29,8 +29,9 @@ var App = {
     testTemplate: null,
     PersonForBuildingDataSource: null,
     AllBuildingsListViewTemplate: null,
-    AllPersonsListViewTemplate:null,
+    AllPersonsListViewTemplate: null,
     AllPersonDataSource: null,
+    CheckinBuildingsTemplate: null,
     AllBuildingDataSource: null,
     CheckinBuildingDataSource: null,
     CheckinDataSource: null,
@@ -55,7 +56,7 @@ var App = {
         this.testTemplate = top.kendo.template($("#ShowPersonDetailViewTest").html());
         this.AllBuildingsListViewTemplate = top.kendo.template($("#AllBuildingsListViewTemplate").html());
         this.AllPersonsListViewTemplate = top.kendo.template($("#AllPersonsListViewTemplate").html());
-        
+        this.CheckinBuildingsTemplate = top.kendo.template($("#CheckinBuildingsTemplate").html());
 
         //load demo data
         Settings.loadDemoData();

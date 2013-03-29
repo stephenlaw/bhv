@@ -78,7 +78,7 @@ var Status = {
                 console.log('Error:' + xhr.statusText);
                 // for now: totdat we de checkinviewmodel hebben aangepast
                 App.reloadData();
-                Status.GetStatus();                                
+                Status.GetStatus();
             },
             statusCode:
             {
@@ -117,7 +117,8 @@ var Status = {
 
         if (App.currentIdentity == "") {
             // what are we going to do here? it seems to be a guest account
-        } else {
+        } else {            
+
             $.ajax({
 
                 beforeSend: function (xhr) {
@@ -161,6 +162,12 @@ var Status = {
 
                             }
                         }
+
+                        $("#assignedBuildings").kendoListView({
+                            dataSource: top.CheckinBuildingDataSource,
+                            pageable: false,
+                            template: App.CheckinBuildingsTemplate
+                        });
                     },
                     403: function (result) {
                         $("#ger").html("Access was denied");

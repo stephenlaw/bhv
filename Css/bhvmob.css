@@ -866,7 +866,8 @@ font: bold .9rem HelveticaNeue,sans-serif;
 /* einde poging android WUR hijsstijl */
 
 #AllPersonsList > li,
-#AllBuildingsList > li
+#AllBuildingsList > li,
+#assignedBuildings > li
 {
     background-color: White;
 }

@@ -53,7 +53,7 @@ var UX = {
             dataSource: top.AllPersonDataSource,
             pageable: false,
             template: App.AllPersonsListViewTemplate
-        });       
+        });
     },
     closeModalViewContact: function () {
         $("#PersonContactView").kendoMobileModalView("close");
