@@ -1,0 +1,550 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>POC BHV App</title>
+    <link href="http://cdn.kendostatic.com/2012.3.1114/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2012.3.1114/styles/kendo.default.min.css"
+        rel="stylesheet" />
+    <link href="http://cdn.kendostatic.com/2012.3.1114/styles/kendo.mobile.all.min.css"
+        rel="stylesheet" />
+    <link href="Css/bhvmob.css" rel="stylesheet" />
+    <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2012.3.1114/js/kendo.all.min.js"></script>
+    
+    <!-- include bhv specific javascript files -->
+    <script src="Scripts/bhv/Utility.js"></script>
+    <script src="Scripts/bhv/Settings.js"></script>
+    <script src="Scripts/bhv/UX.js"></script>
+    <script src="Scripts/bhv/Status.js"></script>
+    <script src="Scripts/bhv/Location.js"></script>
+    <script src="Scripts/bhv/App.js"></script>
+    <!-- start the app when dom is ready -->
+    <script>
+        $(document).ready(function () {
+            App.init();            
+        });
+    </script>
+</head>
+<body>
+    <!-- Layout pagina -->
+    <div data-role="layout" data-id="mobile-tabstrip">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                    <span data-role="view-title" class="view-title"></span>
+
+                
+                <!--<a class="about-button" data-align="right" href="/eeee"
+                   data-role="button">Help</a>-->
+            </div>
+        </header>
+        <footer data-role="footer" data-id="default">
+            <div data-role="tabstrip">
+                <a href="#tabstrip-status" data-icon="featured" id="layout-status">Status</a> 
+                <a href="#tabstrip-persons" data-icon="contacts" id="layout-contacts">Personen</a>
+                <a href="#tabstrip-buildings" data-icon="home" id="layout-buildings">Gebouwen</a>
+                <a href="#tabstrip-instellingen" data-icon="settings" id="layout-instellingen">Instellingen</a>
+            </div>
+        </footer>
+    </div>
+    <!-- Gebouwen -->
+    <div data-role="view" id="tabstrip-buildings" data-title="Gebouwen" data-layout="mobile-tabstrip" data-show="UX.ShowAllBuildingsView">
+        <ul id="AllBuildingsList" class="item-list" data-role="listview" data-template="AllBuildingsListViewTemplate"
+            data-source="AllBuildingDataSource">
+        </ul>
+    </div>
+    <!-- Status -->
+    <div data-role="view" id="tabstrip-status" data-title="Status" data-layout="mobile-tabstrip"
+        data-show="Status.GetStatus">
+        <div id="StatusMessage" class="StatusMessage">
+        </div>
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li id="thisBuilding">
+                <ul>
+                    <li><a id="CheckinOut" href="#tabstrip-status">Test</a> </li>
+                </ul>
+            </li>            
+        </ul>
+        <div id="MyAssignedBuildings">        
+                <ul data-role="listview" id="assignedBuildings" data-source="CheckinBuildingDataSource" data-template="CheckinBuildingsTemplate"
+                    class="item-list">
+                </ul>
+            </div>
+    </div>
+
+    <!-- Checkout -->
+    <div data-role="view" id="CheckoutPerson" data-title="Afmelden" data-layout="mobile-tabstrip"
+        data-show="Status.PrepareCheckOut">
+        <header data-role="header">
+            <div data-role="navbar">
+            </div>
+        </header>        
+    </div>
+
+    <!-- Checkin -->
+    <div data-role="view" id="checkin" data-title="Aanmelden" data-layout="mobile-tabstrip"
+        data-show="Status.PrepareCheckin">
+        <header data-role="header">
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button> <span data-role="view-title">Aangemeld</span>
+            </div>
+        </header>
+        <div id="CheckinSuccesfull">
+            Dit mag niet worden getoond
+        </div>
+    </div>
+    <!-- Instellingen -->
+    <div data-role="view" id="tabstrip-instellingen" data-title="Instellingen" data-layout="mobile-tabstrip">
+        <ul data-role="listview" data-style="inset" data-type="group">
+            <li>
+                <ul>
+                    <li><a href="#Help">Help</a></li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="#Profiel">Profiel</a></li>
+                </ul>
+            </li>
+            <li>
+                <ul>
+                    <li><a href="#Preferences">Voorkeuren</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- Personen -->
+    <div data-role="view" id="tabstrip-persons" data-title="Personen" data-layout="mobile-tabstrip"
+        data-show="UX.ShowAllPersonsView">
+        <ul id="AllPersonsList" class="item-list" data-role="listview" data-template="AllPersonsListViewTemplate"
+            data-source="AllPersonDataSource">
+        </ul>
+    </div>
+    <!--
+        PersonContactView. 
+        Geeft de mogelijkheid om contact op te nemem met personen die zijn aangemeld als hulpverlener
+        -->
+    <div data-role="modalview" id="PersonContactView" style="width: 95%; height: 200px;">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span>Contact</span> <a data-click="UX.closeModalViewContact" data-role="button"
+                    data-align="right">Cancel</a>
+            </div>
+        </div>
+        <ul data-role="listview" data-style="inset" id="Personcontactview-contact">
+            <li data-icon="info" id="Personcontactview-telephone"><a id="Personcontactview-telephone-ref"
+                href="xxx" data-rel="external">Telefoon</a> </li>
+            <li data-icon="info" id="Personcontactview-mail"><a id="Personcontactview-mail-ref"
+                href="xxx" data-rel="external">Stuur mail</a> </li>
+        </ul>
+    </div>
+    <!-- 
+        BuildingContactView 
+        Geeft de mogelijkheid om direct contact op te nemen met de beheerder van het gebouw. 
+        -->
+    <div data-role="modalview" id="BuildingContactView" style="width: 95%; height: 200px;">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span>Contact</span> <a data-click="UX.closeModalViewContact" data-role="button"
+                    data-align="right">Cancel</a>
+            </div>
+        </div>
+        <ul data-role="listview" data-style="inset" id="buildingcontactview-contact">
+            <li data-icon="info" id="Buildingcontactview-telephone"><a id="Buildingcontactview-telephone-ref"
+                href="xxx" data-rel="external">Telefoon</a> </li>
+            <li data-icon="info" id="Buildingcontactview-mail"><a id="Buildingcontactview-mail-ref"
+                href="xxx" data-rel="external">Stuur mail</a> </li>
+        </ul>
+    </div>
+    <!-- Building Details View -->
+    <div data-role="view" id="buildingDetails" data-layout="mobile-tabstrip" data-show="UX.showBuildingDetailsView">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>               
+                <span class="view-subtitle">Gebouw</span>                     
+            </div>
+        </header>
+        <div data-role="content">
+        </div>
+    </div>
+    <!-- Building Checkins View 
+    
+        Toons de personen die in een gebouw zijn aangemeld en biedt de mogelijkheid om een persoon te selecteren en voor deze persoon
+        gedetaileerd informatie op te vragen. Deze view wordt aangeroepen vanuit buildingDetails 
+        
+        -->
+    <div data-role="view" id="BuildingCheckinView" data-layout="mobile-tabstrip" data-show="UX.ShowCheckinPersons">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>
+                <span data-role="view-title" class="view-title">Aangemelde personen</span>
+            </div>
+        </header>
+        <ul id="buildingcheckinview-personlist" class="item-list" data-role="listview" data-template="CheckinPersonsListViewTemplate"
+            data-source="PersonForBuildingDataSource">
+        </ul>
+    </div>
+    <!-- Person Details View -->
+    <!--    <div data-role="view" id="personDetails" data-layout="mobile-tabstrip" data-show="ShowPersonDetailView">
+        <header data-role="header">
+            <div data-role="navbar">
+                <a data-role="backbutton" data-align="left">Back</a> <span data-role="view-title">Persoon</span>
+            </div>
+        </header>
+        <div data-role="content">
+        </div>
+    </div>-->
+    <div data-role="view" id="PersonDetailsTest" data-layout="mobile-tabstrip" data-show="UX.ShowPersonDetailViewTest">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>
+                <span data-role="view-title" class="view-title">Persoon</span>
+            </div>
+        </header>
+        <div data-role="content">
+        </div>
+    </div>
+    <!-- Preferences -->
+    <div data-role="view" id="Preferences" data-title="Voorkeuren" data-layout="mobile-tabstrip"
+        data-show="Settings.loadPreferences">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>
+                <span data-role="view-title" class="view-title">Voorkeuren</span>
+                <button id="SavePreferences" data-click="Settings.savePreferences" class="wur-button" data-role="button" href="#tabstrip-instellingen">Bewaar</button>
+                  <!--<a data-role="backbutton" data-align="left">Instellingen</a> -->
+                    <!--<a data-align="right" data-role="button" data-click="Settings.savePreferences">Save</a>-->
+            </div>
+        </header>
+        <div class="content-wrapper">
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>Toon
+                    <ul>
+                        <li>Toon mijn contactgegevens
+                            <input data-role="switch" id="preferences-show-contactdata" checked="checked" />
+                        </li>
+                        <li>
+                            <select id="preference-webapiurl">
+                            <option value="http://localhost/Bhv.Api/api/">Localhost</option>
+                                <option value="http://bhvapi.wurnet.nl/api/">Live</option>
+                                <option value="http://bhvapi.seigers.nl/api/">Demo</option>
+                            </select>
+                            webapi </li>
+                        <li>UserID
+                            <input id="preferences-identity" type="text" value="Lastname" />
+                        </li>
+                    </ul>
+                </li>
+            </ul>  
+        
+        </div>
+        </div>
+    <!-- Help -->
+    <div data-role="view" id="Help" data-layout="mobile-tabstrip">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>
+                    <span data-role="view-title" class="view-title">Help</span>               
+            </div>
+        </header>
+         <div class="content-wrapper">
+             <h3>Informatie over de BHV registratietool</h3>
+             <p>
+                 Deze tool wordt gebruik voor het registreren van BHV'ers in de gebouwen van Wageningen UR. Om deze tool te kunnen gebruiken moet je zijn aangemeld als BHV'er.
+                 </p>
+                 <p>
+                Neem bij problemen contact op met de functionele beheerder van de applicatie
+                </p>
+                <p>
+                Functionele beheerder<br />
+                Wietse Willebrands<br />
+                <a href="mailto:wietse.willebrands@wur.nl">wietse.willebrands@wur.nl</a><br />
+                <a href="tel:0317484172" data-rel="external">0317 484172</a>
+             </p>
+
+            </div>
+             </div>
+    </div>
+    <!-- Profiel -->
+    <div data-role="view" id="Profiel" data-layout="mobile-tabstrip" data-show="Utility.loadProfile">
+        <header data-role="header">
+            <div data-rol="header-logo" class="header-logo"></div>
+            
+            <div data-role="navbar">
+                <button data-role="backbutton" data-align="left">Back</button>
+                <span data-role="view-title" class="view-title">Profiel</span>
+                  <button data-role="button" href="#tabstrip-instellingen" class="wur-button" data-click="Utility.saveProfile" id="profile-savebutton">Bewaar</button>
+                <!--
+                    notebackbutton and save btn issue to be solved
+                    <a data-role="backbutton" data-align="left">Back</a> 
+                    <a class="about-button" data-align="right"
+                       data-role="button" data-click="Settings.savePreferences">Save</a> <span data-role="view-title">Profiel</span>
+                    -->                                                                                                      
+            </div>
+        </header>
+        <div class="content-wrapper">
+            <ul data-role="listview" data-style="inset" data-type="group">
+                <li>Algemene gegevens
+                    <ul>
+                        <li>
+                            <input type="text" value="Lastname" id="profile-lastname" data-bind="value: textValue"/>
+                            Achternaam </li>
+                        <li>
+                            <input type="text" value="Firstname" id="profile-firstname" />
+                            Voornaam </li>
+                    </ul>
+                </li>
+                <!-- this part is till in the dom, will we change the object on the service which expects the data on the person object-->
+                <li class="hide-this">Instellingen
+                    <ul>
+                        <li>Toon mijn contactgegevens
+                            <input data-role="switch" id="profile-showContactInformation" checked="checked" />
+                        </li>
+                    </ul>
+                </li>
+                <li>Communicatie?
+                    <ul>
+                        <li>
+                            <input type="text" value="eMail" id="profile-emailaddress" />
+                            EMail </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <input type="text" value="phone" id="profile-telephone" />
+                            Telefoon </li>
+                    </ul>
+                    <ul>
+                        <li>
+                            <input type="text" value="mobile" id="profile-mobilephone" />
+                            Mobiel </li>
+                    </ul>
+                    <li>Skills
+                        <ul>
+                            <li>EHBO
+                                <input data-role="switch" id="profile-hasEHBO" checked="checked" />
+                            </li>                            
+                            <li>Ontruimer
+                                <input data-role="switch" id="profile-hasOntruimer" checked="checked" />
+                            </li>
+                            <li>Receptie
+                                <input data-role="switch" id="profile-hasReceptie" checked="checked" />
+                            </li>
+                            <li>BHV-SV
+                                <input data-role="switch" id="profile-hasBHVSV" checked="checked" />
+                            </li>
+                            <li>Ademlucht
+                                <input data-role="switch" id="profile-hasAdemlucht" checked="checked" />
+                            </li>
+                        </ul>
+                    </li>
+                </li>
+            </ul>
+
+            </div>
+    </div>
+    <script type="text/x-kendo-template" id="customListViewTemplate">
+        <a class="details-link" data-role="listview-link" href="\#buildingDetails?id=#:Id#">
+        <img src="#:DetailsImageUrl#" />
+        <h2>#:Name#</h2>
+        </a>
+    </script>
+    <script type="text/x-kendo-template" id="AllBuildingsListViewTemplate">
+    <li>
+        <a class="details-link" data-role="listview-link" href="\#buildingDetails?id=#:Id#">
+        <img src="#:ListImageUrl#" class="main-image"/>
+        <div class="headerTitle">
+            <h3>#:Name#</h3>     <h6>(#:DistanceText#)</h6>   
+        </div>
+        # if (NumberOfBHVSV > 0 ) { #
+        <h6 class="icon-container"><img src="Images/bhv25.jpg"/>#:NumberOfBHVSV#</h6>
+        # } else {#
+        <h6 class="icon-container non-occupied"><img src="Images/bhv25.jpg"/>#:NumberOfBHVSV#</h6>
+        # } #
+
+        # if (NumberOfEHBO > 0 ) { #
+        <h6 class="icon-container"><img src="Images/EHBO25.jpg"/> #:NumberOfEHBO#</h6>
+        # } else { #
+         <h6 class="icon-container non-occupied"><img src="Images/EHBO25.jpg"/> #:NumberOfEHBO#</h6>
+        # } #
+
+        # if (NumberOfAdemlucht > 0 ) { #
+        <h6 class="icon-container"><img src="Images/ademlucht.jpg"/> #:NumberOfAdemlucht#</h6>
+        # } else { #
+         <h6 class="icon-container non-occupied"><img src="Images/ademlucht.jpg"/> #:NumberOfAdemlucht#</h6>
+        # } #
+
+        # if (NumberOfOntruimer > 0 ) { #
+        <h6 class="icon-container"><img src="Images/ontruimer.jpg"/> #:NumberOfOntruimer#</h6>
+        # } else { #
+         <h6 class="icon-container non-occupied"><img src="Images/ontruimer.jpg"/> #:NumberOfOntruimer#</h6>
+        # } #
+        
+        # if (NumberOfReceptie > 0 ) { #
+        <h6 class="icon-container"><img src="Images/receptie.jpg"/> #:NumberOfReceptie#</h6>
+        # } else { #
+         <h6 class="icon-container non-occupied"><img src="Images/receptie.jpg"/> #:NumberOfReceptie#</h6>
+        # } #
+        </a>
+        </li>
+    </script>
+    <!-- CheckinBuildingsTemplate -->
+    <script type="text/x-kendo-template" id="CheckinBuildingsTemplate">
+        <li>
+        <a class="details-link checkin-link" id="#:id#" data-role="listview-link" href="\#tabstrip-status">
+        <img src="#:ListImageUrl#"  class="main-image"/>
+        <h2>#:Name#</h2>
+        </a>
+        </li>
+    </script>
+    <script type="text/x-kendo-template" id="AllPersonsListViewTemplate">
+    <li>
+        <a class="details-link" data-role="listview-link" href="\#PersonDetailsTest?id=#:Id#">
+        <img src="#:ListImageUrl#" class="main-image"/>
+        <div class="listHeader">
+            <h2>#:FullName#</h2> </br>
+        </div>
+        
+        # if ( HasEHBO == true) { #
+         <img src="Images/EHBO25.jpg" class="occupation-icon"/>
+        # } # 
+        # if ( HasAdemlucht == true) { # 
+        <img src="Images/ademlucht.jpg" class="occupation-icon"/> 
+        # } #  
+        # if ( HasBHVSV == true) { #
+        <img src="Images/bhv25.jpg" class="occupation-icon"/>        
+        # } #  
+        # if ( HasOntruimer == true) { # 
+        <img src="Images/ontruimer.jpg" class="occupation-icon"/> 
+        # } #      
+        # if ( HasReceptie == true) { # 
+        <img src="Images/receptie.jpg" class="occupation-icon"/> 
+        # } #  
+              
+        </a></li>
+    </script>
+    <script type="text/x-kendo-template" id="CheckinPersonsListViewTemplate">
+        <a class="details-link" data-role="listview-link" href="\#PersonDetailsTest?id=#:Id#">
+        <img src="#:ListImageUrl#" class="main-image" />
+        <div class="listHeader">
+            <h2>#:FullName#</h2> <h6></h6></br>
+        </div>
+        
+        # if ( HasEHBO == true) { #
+         <img src="Images/EHBO25.jpg" class="occupation-icon"/>
+        # } # 
+        # if ( HasAdemlucht == true) { # 
+        <img src="Images/ademlucht.jpg" class="occupation-icon"/> 
+        # } #  
+        # if ( HasBHVSV == true) { #
+        <img src="Images/bhv25.jpg" class="occupation-icon"/>        
+        # } #  
+        # if ( HasOntruimer == true) { # 
+        <img src="Images/ontruimer.jpg" class="occupation-icon"/> 
+        # } #      
+        # if ( HasReceptie == true) { # 
+        <img src="Images/receptie.jpg" class="occupation-icon"/> 
+        # } #  
+        </a>
+    </script>
+    <script type="text/x-kendo-template" id="buildingDetailTemplate">
+        
+        <aside>        
+          <img src="#:DetailsImageUrl#" class="main-image"/>
+          <div class="buildingDetail-wrapper">
+               <div class="detailContent #if (NumberOfBHVSV == 0 ){#non-occupied#}#">
+                <img src="Images/bhv25.jpg"/> #:NumberOfBHVSV#
+              </div>
+
+              <div class="detailContent #if (NumberOfEHBO == 0 ){#non-occupied#}#">
+                <img src="Images/EHBO25.jpg"/> #:NumberOfEHBO#
+              </div>
+              
+              <div class="detailContent #if (NumberOfAdemlucht == 0 ){#non-occupied#}#">
+                <img src="Images/ademlucht.jpg" class="occupation-icon"/>   #:NumberOfAdemlucht#
+              </div>
+
+              <div class="detailContent #if (NumberOfOntruimer == 0 ){#non-occupied#}#">
+                <img src="Images/ontruimer.jpg" class="occupation-icon"/>   #:NumberOfOntruimer#
+              </div>
+
+              <div class="detailContent #if (NumberOfReceptie == 0 ){#non-occupied#}#">
+                <img src="Images/receptie.jpg" class="occupation-icon"/>   #:NumberOfReceptie#
+              </div>
+
+              
+
+          </div>
+        </aside>
+
+        # if (CurrentNumberOfCheckins > 0) { #
+        <ul data-role="listview" data-style="inset">
+           <li>
+              <a class="details-link" data-role="listview-link" href="\#BuildingCheckinView?id=#:Id#">Aangemelde personen</a>
+          </li>
+        </ul>
+        # } #                    
+    </script>
+    <!--    <script type="text/x-kendo-template" id="person-detail-template">
+        <aside>
+          <img src="#:DetailsImageUrl#" />
+          <span>#:LastName#, #:FirstName#</span>        
+        </aside>
+        <ul data-role="listview" data-style="inset">
+           <li>
+              <a class="details-link" data-role="listview-link" href="\#checkin?id=#:Id#">Contact</a>
+          </li>
+        </ul>                  
+    </script-->
+    <script type="text/x-kendo-template" id="ShowPersonDetailViewTest">
+        <aside>
+          <img src="#:DetailsImageUrl#" class="main-image"/>
+          <div class="personDetail-wrapper">
+          <span>#:FullName#</span>
+          </div>     
+        <div class="person-occupation">
+           # if ( HasEHBO == true) { #
+         <img src="Images/EHBO25.jpg" class="occupation-icon"/>
+        # } # 
+        # if ( HasAdemlucht == true) { # 
+        <img src="Images/ademlucht.jpg" class="occupation-icon"/> 
+        # } #  
+        # if ( HasBHVSV == true) { #
+        <img src="Images/bhv25.jpg" class="occupation-icon"/>        
+        # } #  
+        # if ( HasOntruimer == true) { # 
+        <img src="Images/ontruimer.jpg" class="occupation-icon"/> 
+        # } #      
+        # if ( HasReceptie == true) { # 
+        <img src="Images/receptie.jpg" class="occupation-icon"/> 
+        # } #  
+        </div>  
+                </aside>
+        <div class="personenContent-wrapper">
+        # if(top.App.currentPerson != null) { #
+         # if(top.App.currentPerson.ShowMyContactData == true) {#
+                 <ul data-role="listview" data-style="inset">
+           <li>
+              <a class="details-link" data-role="listview-link" href="\#PersonContactView"  data-rel="modalview">Contact</a>
+          </li>
+        </ul>
+        # }} #
+        Aangemeld in 
+        <ul data-role="listview" data-style="inset">
+           <li>
+              <a class="details-link" data-role="listview-link" href="\#buildingDetails?id=#:BuildingId#">#:BuildingName#</a>
+          </li>
+        </ul>      
+                   </div>
+    </script>
+    <script type="text/x-kendo-template" id="StatusTemplate">
+        <li>
+        <h3>Hallo</h3>
+        </li>
+    </script>
+</body>
+</html>
